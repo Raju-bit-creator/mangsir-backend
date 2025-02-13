@@ -4,6 +4,8 @@ const app = express();
 let PORT = process.env.PORT || 5000; //assignment research about MVC architecture
 // console.log(PORT);
 dbConnect();
+
+app.use(express.json());
 app.get("/", function (req, res) {
   res.send("Hello World");
 });
