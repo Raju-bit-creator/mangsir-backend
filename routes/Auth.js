@@ -36,7 +36,9 @@ router.post(
         password: secPass,
       });
       const data = {
-        user: user.id,
+        user: {
+          id: user.id,
+        },
       };
       const authToken = jwt.sign(data, JWT_SECRET);
       // console.log(authToken);
@@ -68,7 +70,9 @@ router.post(
         return res.status(400).json({ message: "invalid credentails" });
       }
       const data = {
-        user: user.id,
+        user: {
+          id: user.id,
+        },
       };
       const authToken = jwt.sign(data, JWT_SECRET);
       // console.log(authToken);
@@ -84,7 +88,8 @@ router.get("/getuser", fetchUser, async (req, res) => {
   try {
     const userId = req.user.id;
     const user = await User.findById(userId).select("-password");
-    res.send(user);
+    res.json({ user });
+    // console.log(user);
   } catch (error) {
     res.status(500).send("internal server error");
   }

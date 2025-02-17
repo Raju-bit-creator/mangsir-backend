@@ -10,7 +10,7 @@ app.get("/", function (req, res) {
   res.send("Hello World");
 });
 app.use("/api/auth", require("./routes/Auth"));
-// app.use("/api/product", require('./routes.js/Products'));
+app.use("/api/product", require("./routes/Product"));
 
 app.listen(PORT, () => {
   console.log(`api is running on port ${PORT}`);
