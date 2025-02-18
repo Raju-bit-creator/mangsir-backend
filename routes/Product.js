@@ -43,4 +43,40 @@ router.post(
   }
 );
 
+// update product
+router.put("/updateproduct/:id", fetchUser, async (req, res) => {
+  const { title, description, price, instock } = req.body;
+  try {
+    const newProduct = {};
+    if (title) {
+      newProduct.title = title;
+    }
+    if (description) {
+      newProduct.description = description;
+    }
+    if (price) {
+      newProduct.price = price;
+    }
+    if (instock) {
+      newProduct.instock = instock;
+    }
+
+    let product = await Product.findByIdAndUpdate(req.params.id);
+    if (!product) {
+      return res.status(404).json({ error: "product not found" });
+    }
+    if (!product.user || product.user.toString() !== req.user.id) {
+      return res.status(401).send("not allowed");
+    }
+    product = await Product.findByIdAndUpdate(
+      req.params.id,
+      { $set: newProduct },
+      { new: true }
+    );
+    res.json(product);
+  } catch (error) {
+    res.status(500).send("internal server error");
+  }
+});
+
 module.exports = router;
