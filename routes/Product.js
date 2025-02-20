@@ -27,12 +27,16 @@ router.post(
       if (!errors.isEmpty()) {
         return res.status(400).json({ error: errors.array() });
       }
+      let image = req.files.map((el) => {
+        return el.filename;
+      });
 
       const product = new Product({
         title,
         description,
         price,
         instock,
+        image,
         user: req.user.id,
       });
       const saveProduct = await product.save();
@@ -97,3 +101,11 @@ router.delete("/deleteproduct/:id", fetchUser, async (req, res) => {
 });
 
 module.exports = router;
+
+//status code
+// 200 : the request is successful
+// 201 : the request is successful and a new resource has been created
+// 400 : the request is invalid or cannot be processed
+// 401 : the request is not authorized
+// 404 : the request is not found
+// 500 : internal server error
