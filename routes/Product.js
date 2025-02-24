@@ -6,7 +6,15 @@ const router = express.Router();
 
 router.get("/getallproduct", fetchUser, async (req, res) => {
   try {
-    const product = await Product.find({ user: req.user.id });
+    const searchQuery = req.query.searchQuery
+      ? {
+          title: {
+            $regex: req.query.searchQuery,
+            $options: "i",
+          },
+        }
+      : {};
+    const product = await Product.find({ ...searchQuery });
     res.json(product);
   } catch (error) {
     res.status(500).send("internal server error");
